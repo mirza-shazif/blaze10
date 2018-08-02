@@ -12,6 +12,25 @@ use Auth;
 
 class UserController extends Controller
 {
+
+  public function attempt_login(Request $request) {
+    $email = $request->input('email');
+    $password = $request->input('password');
+
+    if(Auth::attempt([ "email" => $email, "password" => $password ])) {
+      return redirect(route('user.home'));
+    } else {
+      return redirect()->back()->with("message", "The email or password you entered is incorrect.")->withInput();
+    }
+  }
+
+
+  public function logout() {
+    Auth::logout();
+    return redirect(route('user.login'));
+  }
+
+
   public function register(Request $request) {
 
   $verification_token=md5(mt_rand());

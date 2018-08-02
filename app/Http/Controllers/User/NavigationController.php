@@ -10,11 +10,16 @@ use App\Challenge;
 class NavigationController extends Controller
 {
 
+    public function __construct() {
+      $this->middleware('auth', [ "only" => "home" ]);
+    }
+
 
   public function login()
   {
     return view('user.login');
   }
+
 
 
   public function home() {

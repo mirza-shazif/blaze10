@@ -32,21 +32,23 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 
 //User Routes
 
-Route::group(['prefix' => 'user', 'namespace' => 'User'], function() {
+Route::group(['prefix' => 'user', 'namespace' => 'User', 'middleware' => 'auth' ], function() {
 
+  Route::post('/attempt-login', 'UserController@attempt_login')->name('user.attempt_login');
   Route::post('/register', 'UserController@register')->name('user.register');
-
   Route::post('/challenges','ChallengeController@index')->name('user.challenges');
-
   Route::post('/update-password', 'UserController@update_password')->name('user.update_password');
-
   Route::post('/resend-verification-link', 'UserController@resend_verification_email')->name("user.resend_verification_link");
+
+
+    Route::get('/logout', 'UserController@logout');
 
   Route::get('/home', 'NavigationController@home')->name('user.home');
   Route::get('/settings', 'NavigationController@settings')->name('user.settings');
   Route::get('/explore', 'NavigationController@explore')->name('user.explore');
   Route::get('/page2', 'NavigationController@page2')->name('user.page2');
   Route::get('/profile', 'NavigationController@profile')->name('user.profile');
+
 
   Route::get('/login', 'NavigationController@login')->name('user.login');
 
@@ -73,12 +75,3 @@ Route::get('/photography', 'PagesController@photography');
 Route::get('/sports', 'PagesController@sports');
 Route::get('/terms', 'PagesController@terms');
 Route::get('/topVideo', 'PagesController@topVideo');
-
-
-
-
-Route::post('/register','RegisterController@register')->name('member.register');
-
-
-Route::get('/login','LoginController@index');
-Route::post('/login','LoginController@login')->name('member.login');
