@@ -29,10 +29,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 });
 
 
-
 //User Routes
 
-Route::group(['prefix' => 'user', 'namespace' => 'User', 'middleware' => 'auth' ], function() {
+Route::group(['prefix' => 'user', 'namespace' => 'User' ], function() {
 
   Route::post('/attempt-login', 'UserController@attempt_login')->name('user.attempt_login');
   Route::post('/register', 'UserController@register')->name('user.register');
@@ -41,7 +40,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'User', 'middleware' => 'auth' 
   Route::post('/resend-verification-link', 'UserController@resend_verification_email')->name("user.resend_verification_link");
 
 
-    Route::get('/logout', 'UserController@logout');
+  Route::get('/logout', 'UserController@logout');
 
   Route::get('/home', 'NavigationController@home')->name('user.home');
   Route::get('/settings', 'NavigationController@settings')->name('user.settings');
@@ -50,7 +49,8 @@ Route::group(['prefix' => 'user', 'namespace' => 'User', 'middleware' => 'auth' 
   Route::get('/profile', 'NavigationController@profile')->name('user.profile');
 
 
-  Route::get('/login', 'NavigationController@login')->name('user.login');
+
+  Route::get('/login', '\App\Http\Controllers\Auth\LoginController@login')->name('user.login');
 
   Route::get('/not-verified', 'NavigationController@unverified')->name('user.unverified');
 
