@@ -19,9 +19,8 @@ class NavigationController extends Controller
 
 
   public function home() {
-
-    $challenge=Challenge::all();
-    return view('user.home',compact('challenge'));
+    $challenges = Challenge::all();
+    return view('user.home', compact('challenges'));
   }
 
   public function settings() {
@@ -44,38 +43,5 @@ class NavigationController extends Controller
   }
 
 
-
-  public function unverified() {
-    if(session('message')) {
-      return view("user.unverified-user");
-    } else {
-      return redirect(route('user.login'));
-    }
-  }
-
-  public function verify_user(Request $request, $user_id, $token) {
-    if($user_id !== null || $token !== null) {
-      $user = User::find($user_id);
-      if($user !== null) {
-        $user = $user->first();
-        if($user->verified == 0) {
-          if($user->verification_token == $token) {
-            //show password form
-            return redirect(route("user.unverified"))->with("message", "Token matched.")->with("user_id", $user_id);
-          } else {
-            return redirect(route("user.unverified"))->with("message", "The token you are using is invalid.");
-          }
-        } else {
-          //user already verified
-          return redirect(route("user.unverified"))->with("message", "You are already verified.");
-        }
-      } else {
-        //user is null
-        return redirect(route('user.login'));
-      }
-    } else {
-      return redirect(route('user.login'));
-    }
-  }
 
 }

@@ -32,10 +32,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 //User Routes
 
 Route::group(['prefix' => 'user', 'namespace' => 'User' ], function() {
+  Route::post('/create-challenge','ChallengeController@create')->name('user.create_challenge');
+  Route::post('/post-comment{challenge_id}{user_id}','ChallengeController@post_comment')->name('user.post_comment');
 
-  Route::post('/attempt-login', 'UserController@attempt_login')->name('user.attempt_login');
+
+  Route::post('/login', 'UserController@login')->name('user.attempt_login');
   Route::post('/register', 'UserController@register')->name('user.register');
-  Route::post('/challenges','ChallengeController@index')->name('user.challenges');
   Route::post('/update-password', 'UserController@update_password')->name('user.update_password');
   Route::post('/resend-verification-link', 'UserController@resend_verification_email')->name("user.resend_verification_link");
 
@@ -52,10 +54,10 @@ Route::group(['prefix' => 'user', 'namespace' => 'User' ], function() {
 
   Route::get('/login', '\App\Http\Controllers\Auth\LoginController@login')->name('user.login');
 
-  Route::get('/not-verified', 'NavigationController@unverified')->name('user.unverified');
+  Route::get('/not-verified', '\App\Http\Controllers\Auth\LoginController@unverified')->name('user.unverified');
 
 
-  Route::get('/verify/{user_id}/{token}', 'NavigationController@verify_user')->name('user.verify');
+  Route::get('/verify/{user_id}/{token}', '\App\Http\Controllers\Auth\LoginController@verify_user')->name('user.verify');
 
 });
 

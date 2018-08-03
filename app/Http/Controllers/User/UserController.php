@@ -13,7 +13,7 @@ use Auth;
 class UserController extends Controller
 {
 
-  public function attempt_login(Request $request) {
+  public function login(Request $request) {
     $email = $request->input('email');
     $password = $request->input('password');
 
@@ -23,6 +23,7 @@ class UserController extends Controller
       return redirect()->back()->with("message", "The email or password you entered is incorrect.")->withInput();
     }
   }
+
 
 
   public function logout() {

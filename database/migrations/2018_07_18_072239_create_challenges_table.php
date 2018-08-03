@@ -15,12 +15,12 @@ class CreateChallengesTable extends Migration
     {
         Schema::create('challenges', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('text');
-          $table->string('img');
-          $table->string('video');
+          $table->text('media_caption')->nullable();
+          $table->string('media');
           $table->unsignedInteger('user_id');
           $table->foreign('user_id')->references('id')->on('users');
           $table->timestamps();
+
         });
     }
 

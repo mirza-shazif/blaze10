@@ -7,37 +7,71 @@
 
          <div class="content-main">
 		    <div class="container">
+          <div class="row">
+
         <div class="col-md-8 col-xs-12 col-sm-8 col-lg-8">
-          @foreach($challenge as $challenge)
-				       <div class="card">
+          @foreach($challenges as $challenge)
 
-					              <h5><img src="{{ asset('user/images/f5.png') }}" alt="Avatar" class="avatar">&nbsp;&nbsp;&nbsp;yasir7821• <a href="">Follow</a></h5>
+            <?php
+            $user = \App\User::find($challenge->user_id);
+            ?>
+     <div class="card">
 
-
-                           <img src="{{ asset('storage/'.$challenge->img) }}" alt="Jane" style="width:100%" class="img-responsive">
-                                 <div class="inner-paddingd">
-								        <img src="{{ asset('user/images/f2.png') }}" alt="Avatar" class="avatar">
-								         <img src="{{ asset('user/images/f6.png') }}" alt="Avatar" class="avatar">
-								          <img class="third-img" src="{{ asset('user/images/f7.png') }}" alt="Avatar" class="avatar">
-								            <h5>&nbsp;&nbsp;<a href="#">50 likes</a></h5>
-								             <h6>&nbsp;&nbsp;<a href="#" style="    color: #999;">5 DAYS AGO</a></h6>
-
-								  <hr>
-
-                                                <form>
-                                                    <div class="form-group">
-                                                     <input type="text" placeholder="add a comment" class="form-control" id="pwd" style="-webkit-box-shadow:none;border:none;width:90%;">
-                                                    </div>
-												</form>
+              <h5>
+                <img src="{{ asset('users/images/f5.png') }}" alt="Avatar" class="avatar">
+                <span>{{ $user->name }}</span>
+                <small>{{ $user->username }}</small>
+                <a href="" class="btn btn-primary btn-sm">Follow</a>
+              </h5>
 
 
+                 <img src="{{ asset('data/'.$challenge->media) }}" alt="Jane" style="width:100%" class="img-responsive">
+               <div class="inner-paddingd">
+      <img src="{{ asset('users/images/f2.png') }}" alt="Avatar" class="avatar">
+       <img src="{{ asset('users/images/f6.png') }}" alt="Avatar" class="avatar">
+        <img class="third-img" src="{{ asset('users/images/f7.png') }}" alt="Avatar" class="avatar">
+          <h5>&nbsp;&nbsp;<a href="#">50 likes</a></h5>
+           <h6>&nbsp;&nbsp;<a href="#" style="    color: #999;">5 DAYS AGO</a></h6>
 
-                                       	                <span class="inner-span"><a href="#23" data-toggle="modal" data-target="#myModal">......</a></span>
+<hr>
+
+<form method="post" action="{{route('user.post_comment',['challenge_id'=>$challenge->id,'user_id'=>$user->id])}}">
+  @csrf
+<div class="form-group">
+  <textarea name="comment" rows="3" cols="80" placeholder="Add a Comment" class="form-conterol"></textarea>
+<button class="btn btn-primary pull-right" type="submit" >Add</button>
+</div>
+</form>
 
 
-                                 </div>
-								     <!-- -->
-                        </div>
+
+<?php
+$comments = \App\Comment::where('challenge_id', $challenge->id)->get();
+?>
+
+@foreach($comments as $comment)
+  <?php
+  $comment_user = \App\User::find($comment->user_id);
+  ?>
+  <div class="media">
+    <img src="" height="40" />
+    <div class="media-body">
+      <h5>{{ $comment_user->name }}<small>@ {{ $comment_user->username }}</small></h5>
+      <p>{{ $comment->comment }}</p>
+      <small><a href="#">Like</a></small>
+      <small><a href="#" class="reply">Reply</a></small>
+    </div>
+  </div>
+
+@endforeach
+
+
+
+
+
+               </div>
+			     <!-- -->
+              </div>
 						   <!-- -->
 
 @endforeach
@@ -122,6 +156,7 @@
 
 
 				 </div>
+       </div>
 				     <!-- -->
 			</div>
 			    <!-- -->
@@ -167,5 +202,13 @@ $(window).bind('scroll', function () {
     }
 });
 
+</script>
+<script>
+$(document).ready(function () {
+	$(".reply").click(function (e) {
+    e.preventDefault();
+    $('<form action="" method="post"><input type="text" name="reply" placeholder="Reply" /></form>').insertAfter($(this));
+  });
+});
 </script>
 @endsection
